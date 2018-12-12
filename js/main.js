@@ -1,5 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+ctx.imageSmoothingEnabled = false; 
 
 var keysDown = new Array();
 
@@ -20,6 +21,7 @@ var inputs = [
 
 var game = new Game(stages.defaultStage);
     game.addPlayer(new Santa(100, 100, "Player 1", inputs[0]));
+
 
 startGame();
 

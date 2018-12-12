@@ -3,23 +3,26 @@ class Character{
         this.x = x;
         this.y = y;
         this.name = name;
+        this.state = "idle"; // Can be: idle, jump, fall, move...
         this.input = input;
         this.onGround = true;
         this.jumpDir = 0; // 0 = Not jumping, 1 = jumping
         this.jumpVel = 0;
         this.maxVel = 1;
         this.doubleJumpUsed = false;
-        this.amountOfJumps = 3;
+        this.amountOfJumps = 2; // Extra jumps, 1 == double jump, standard.
         this.jumpsLeft = this.amountOfJumps
         this.jumpSpeed = 6;
         this.movementSpeed = 5;
         this.jumpHeight = 18;
         this.textures = {};
-        this.jumpDelay = 15; // Frames
+        this.jumpDelay = 10; // Frames
         this.leftUntilNextJump = 0;
         this.currentSprite;
         this.flipped = false;
         this.hasFlippedTextures = true;
+
+        this.moved = false;
     }
 
     loadTexture(name, path){
@@ -56,8 +59,11 @@ class Character{
 
     resetJump(){
         //this.jumpDir = 0;
+        if(this.jumpDir < 2) return; 
         this.jumpsLeft = this.amountOfJumps;
         this.onGround = true;
+        this.state = "idle";
+        this.jumpDir = 0;
     }
 
     draw(){
@@ -73,6 +79,7 @@ class Character{
 
     logic(stage){
         // Movements
+        this.moved = false;
         if((keysDown[this.input.getKey("up")] || keysDown[this.input.getKey("jump")]) && this.jumpsLeft > 0) this.jump()
         if(keysDown[this.input.getKey("down")]) this.move(0, this.movementSpeed);
         if(keysDown[this.input.getKey("left")]){
@@ -83,6 +90,12 @@ class Character{
             this.move(this.movementSpeed, 0);
             this.flipped = false;
         }
+
+        if(this.moved){
+            this.state = "move";
+        } else {
+            this.state = "idle";
+        }
         
         // Collisions
         this.onGround = false;
@@ -90,19 +103,17 @@ class Character{
             var collision = this.checkCollision(stagePart);
 
             while(collision){
-                if(collision.fromBottom){
-                    this.move(0, 1);
-                }
+                if(collision.fromBottom) this.move(0, 1);
                 if(collision.fromLeft) this.move(-1, 0);
                 if(collision.fromRight) this.move(1, 0);
                 if(collision.fromTop) {
-                    this.resetJump();
+                    /* this.resetJump(); */
                     this.move(0, -1);
                 }
                 collision = this.checkCollision(stagePart);
             }
 
-            if(this.checkCollision(stagePart, 2).fromTop){
+            if(this.checkCollision(stagePart, 1).fromTop){
                 this.resetJump();
             }
         }
@@ -116,11 +127,14 @@ class Character{
         }
 
         // Jumping
-        if(this.jumpDir == 1){
+        if(this.jumpDir > 0){
             this.move(0, this.jumpVel);
             this.jumpVel++;
+            if(this.jumpVel > 0) this.jumpDir = 2; // Going down
+            if(this.jumpVel < 0) this.state = "jump"
+                else this.state = "fall";
             if(this.jumpVel > this.maxVel) this.jumpVel = this.maxVel;
-        }
+         } 
     }
 
     checkCollision(stagePart, extraBottom) {
@@ -169,7 +183,8 @@ class Character{
                 fromLeft: short == 0,
                 fromRight: short == 1,
                 fromTop: short == 2,
-                fromBottom: short == 3
+                fromBottom: short == 3,
+                distanceFromTop: values[2]
             }
     
         }
@@ -184,5 +199,6 @@ class Character{
     move(x, y){
         this.x += x;
         this.y += y;
+        this.moved = true;
     }
 }
