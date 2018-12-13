@@ -1,5 +1,6 @@
 class Character {
-    constructor(x, y, name, input, id) {
+    constructor(x, y, name, input, id, lives) {
+        this.lives = lives;
         this.id = id;
         this.x = x;
         this.y = y;
@@ -111,7 +112,7 @@ class Character {
 
     damage(amount, knockBack, direction){
         this.resetJump();
-        console.log(knockBack)
+        if(this.isInvincible()) return;
         var amountToDeal = amount;
         if(this.shieldActive){
             amountToDeal -= this.shieldHP;
@@ -131,29 +132,33 @@ class Character {
             }
         }
         if(amountToDeal > 0) this.health -= amountToDeal;
-        if(this.health < 1) this.kill();
-        
+        if(this.health < 1) this.kill();   
     }
 
     kill(){
         this.alive = false;
+        this.lives--;
+        var spawn = game.stage.spawns[Math.floor(Math.random()*game.stage.spawns.length)]
+
+        this.health = this.maxHealth;
+        this.x = spawn.x;
+        this.y = spawn.y;
 
     }
 
     draw() {
         var dimensions = this.getBound();
 
-        ctx.font = "12px Ubuntu";
+        // TODO
+        /* ctx.font = "12px Ubuntu";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.fillText(this.name, this.x + (dimensions.width / 2), this.y - 30)
+        ctx.fillText(this.name, this.x + (dimensions.width / 2)  + camera.x, this.y - 30 + camera.y) */
      
         var healthBarWidth = 80;
         var healthBarHeight = 9;
-        ctx.fillStyle = "grey";
-        ctx.fillRect(this.x + ((dimensions.width/2) - healthBarWidth/2), this.y - 20, healthBarWidth, healthBarHeight);
-        ctx.fillStyle = "#6dff70";
-        ctx.fillRect(this.x + ((dimensions.width/2) - healthBarWidth/2), this.y - 20, healthBarWidth / (this.maxHealth/this.health), healthBarHeight)
+        draw("#131313", this.x + ((dimensions.width/2) - healthBarWidth/2), this.y - 20, healthBarWidth, healthBarHeight);
+        draw("#6dff70", this.x + ((dimensions.width/2) - healthBarWidth/2), this.y - 20, healthBarWidth / (this.maxHealth/this.health), healthBarHeight)
     }
 
     
@@ -163,7 +168,7 @@ class Character {
         var shield = this.getTexture("shield");
         var dimensions = this.getBound();
 
-        if (this.shieldActive) ctx.drawImage(shield, (this.x + ((dimensions.width / 2))) - (((shield.width / 2) * scale) * (this.shieldHP / 100)), this.y + (((dimensions.height / 2))) - (((shield.height / 2) * scale) * (this.shieldHP / 100)), (shield.width * scale) * (this.shieldHP / 100), (shield.height * scale) * (this.shieldHP / 100))
+        if (this.shieldActive) draw(shield, (this.x + ((dimensions.width / 2))) - (((shield.width / 2) * scale) * (this.shieldHP / 100)), this.y + (((dimensions.height / 2))) - (((shield.height / 2) * scale) * (this.shieldHP / 100)), (shield.width * scale) * (this.shieldHP / 100), (shield.height * scale) * (this.shieldHP / 100))
     }
 
     activateShield() {
@@ -201,14 +206,20 @@ class Character {
         if (this.input.getKey("special") == code) {
             this.special();
         }
+        if(this.input.getKey("damage") == code){
+            this.attack();
+        }
     }
 
     logic(stage) {
+
+        if(this.y > 1000) this.kill();
+
         // Movements
         this.shieldLogic();
         this.moved = false;
         if(this.isInvincible()){
-            this.opacity = Math.sin(Date.now()/200)+1.5;
+            this.opacity = Math.sin(Date.now()/90)+1.5;
         } else {
             this.opacity = 1;
         }
@@ -271,22 +282,24 @@ class Character {
         // Collisions
         this.onGround = false;
         for (var stagePart of stage.content) {
-            var collision = this.checkCollision(stagePart);
+            if(stagePart.collision){
+                var collision = this.checkCollision(stagePart);
 
-            while (collision) {
-                if (collision.fromBottom) this.move(0, 1);
-                if (collision.fromLeft) this.move(-1, 0);
-                if (collision.fromRight) this.move(1, 0);
-                if (collision.fromTop) {
-                    /* this.resetJump(); */
-                    this.move(0, -1);
+                while (collision) {
+                    if (collision.fromBottom) this.move(0, 1);
+                    if (collision.fromLeft) this.move(-1, 0);
+                    if (collision.fromRight) this.move(1, 0);
+                    if (collision.fromTop) {
+                        this.move(0, -1);
+                    }
+                    collision = this.checkCollision(stagePart);
                 }
-                collision = this.checkCollision(stagePart);
+    
+                if (this.checkCollision(stagePart, 1).fromTop) {
+                    this.resetJump();
+                }
             }
-
-            if (this.checkCollision(stagePart, 1).fromTop) {
-                this.resetJump();
-            }
+            
         }
 
         // Item collisions

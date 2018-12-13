@@ -10,4 +10,5 @@ body{
     position: relative;
     margin-top: 25px;
     image-rendering: pixelated;
+    height: 90vh;
 }
