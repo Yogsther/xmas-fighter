@@ -3,6 +3,7 @@ class Game{
         this.stage = stage;
         this.running = true;
         this.players = [];
+        this.items = [];
     }
 
     addPlayer(player){
@@ -11,6 +12,10 @@ class Game{
 
     removePlayer(){
             
+    }
+
+    addItem(item){
+        this.items.push(item);
     }
 
     kill(){
