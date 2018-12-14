@@ -4,6 +4,9 @@ ctx.imageSmoothingEnabled = false;
 
 var keysDown = new Array();
 
+const LOG_KEYS = true;
+
+
 var camera = {
     zoom: 1,
     desiredZoom: .5,
@@ -17,7 +20,6 @@ var camera = {
     zoomPauseTime: 400, /* Frames */
     zoomPause: 0
 }
-
 
 function updateCamera() {
     var testZoom = camera.maxZoom;
@@ -39,7 +41,6 @@ function updateCamera() {
     camera.y = -(((canvas.height / camera.zoom) - canvas.height) / 2);
 }
 
-const LOG_KEYS = false;
 
 document.addEventListener("keydown", e => {
     keysDown[e.keyCode] = true;
@@ -54,15 +55,16 @@ document.addEventListener("keyup", e => {
 })
 
 var inputs = {
-    wasd: new Input("wasd", [87, 83, 65, 68, 76, 75, 32]),
-    empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1])
+    wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
+    empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1]),
+    keys: new Input("keys", [38, 40, 37, 39, 108, 96, -1])
 }
 
 
 
 var game = new Game(stages.defaultStage);
 game.addPlayer(new Santa(100, 100, "P1", inputs.wasd, 0));
-game.addPlayer(new Santa(420, 100, "Bot", inputs.empty, 1));
+game.addPlayer(new Santa(420, 100, "Bot", inputs.keys, 1));
 
 
 
