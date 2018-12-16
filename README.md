@@ -1,4 +1,5 @@
-## [Play. The. Game xmas.livfor.it](https://xmas.livfor.it)
+
+## [XMAS-FIGHTERS | Play. The. Game](https://xmas.livfor.it)
 
 ### Controls
 Player 1: WASD, C, V
