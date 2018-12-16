@@ -2,4 +2,5 @@
 
 ### Controls
 Player 1: WASD, C, V
+
 Player 2: Arrow Keys, K, L
