@@ -54,16 +54,17 @@ document.addEventListener("keyup", e => {
     keysDown[e.keyCode] = false;
 })
 
+/* Key order: UP, DOWN, LEFT, RIGHT, DAMAGE, SPECIAL, JUMP */
 var inputs = {
     wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
     empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1]),
-    keys: new Input("keys", [38, 40, 37, 39, 108, 96, -1])
+    keys: new Input("keys", [38, 40, 37, 39, 76, 75, -1])
 }
 
 
 
 var game = new Game(stages.defaultStage);
-game.addPlayer(new Santa(100, 100, "P1", inputs.wasd, 0));
+game.addPlayer(new Snowman(100, 100, "P1", inputs.wasd, 0));
 game.addPlayer(new Santa(420, 100, "Bot", inputs.keys, 1));
 
 

@@ -1,5 +1,5 @@
 class Item {
-    constructor(x, y, origin, direction, speed, sprite, scale, damage, destroysOnImpact, path, lifeSpan, knockBack) {
+    constructor(x, y, origin, direction, speed, sprite, scale, damage, destroysOnImpact, path, lifeSpan, knockBack, name) {
         if (path === undefined) path = "linear"
         if (scale === undefined) scale = 1;
         if (knockBack === undefined) knockBack = 10;
@@ -19,6 +19,7 @@ class Item {
         this.floatX = 0;
         this.lifeSpan = lifeSpan // In frames
         this.age = 0; // Frames
+        this.name = name; // Can be undefined
     }
 
     draw() {
