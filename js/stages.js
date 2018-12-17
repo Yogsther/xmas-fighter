@@ -37,9 +37,21 @@ class Snowflake{
         this.opacity = Math.random();
         this.fallSpeed = 5 + (Math.random()*3);
         this.goingLeft = false;
+        this.stopped = false;
+        this.lifeLeft = 200;
     }
     logic(){
         /* this.x; */
+        this.lifeLeft--;
+        if(this.stopped) return;
+        for(item of game.stage.content){
+            if(item.collision){
+                if(checkCollision(item, this)){
+                    this.stopped = true;
+                    return;
+                }
+            }
+        }
         if(Math.random() > .98) this.goingLeft = !this.goingLeft; // Switch direciton
         this.y+=this.fallSpeed;
         if(this.goingLeft) this.x+=.5;
@@ -51,10 +63,10 @@ var stages = {
     
     defaultStage: {
         snowflakes: [],
-        snowflakeAmount: 300,
+        snowflakeAmount: 1000,
         logic: function() {
             var flakesCreatedThisFrame = 0;
-            while(this.snowflakes.length < this.snowflakeAmount && flakesCreatedThisFrame < 1){
+            while(this.snowflakes.length < this.snowflakeAmount && flakesCreatedThisFrame < 5){
                 this.snowflakes.push(new Snowflake());
                 flakesCreatedThisFrame++;
             }
@@ -62,7 +74,7 @@ var stages = {
             for(var i = 0; i < this.snowflakes.length; i++){
                 this.snowflakes[i].logic();
                 draw("rgba(255, 255, 255, " + this.snowflakes[i].opacity + ")", this.snowflakes[i].x, this.snowflakes[i].y, this.snowflakes[i].width, this.snowflakes[i].height, false);
-                if(!inFrame(this.snowflakes[i]) && this.snowflakes[i].y > 700) this.snowflakes.splice(i, 1);
+                if((!inFrame(this.snowflakes[i]) && this.snowflakes[i].y > 700) || this.snowflakes[i].lifeLeft < 0) this.snowflakes.splice(i, 1);
             }
         },
         bgcolor: "#9fdbdb",

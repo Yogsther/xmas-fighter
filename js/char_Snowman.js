@@ -93,7 +93,7 @@ class Snowman extends Character {
             this.flagX = this.x + (this.getBound().width / 2) - ((this.getTexture("snowrock").width*rockScale)/2);
             this.flagY = this.y + this.getBound().height - this.getTexture("flag").height * this.flagScale;
             
-        game.addItem(new Item(this.x + (this.getBound().width / 2) - ((this.getTexture("snowrock").width*rockScale)/2), -500, this.name, 2, rockSpeed, this.getTexture("snowrock"), 5, 50, true, "linear", 1500, 30, "snowrock"))
+        game.addItem(new Item(this.x + (this.getBound().width / 2) - ((this.getTexture("snowrock").width*rockScale)/2), -500, this.name, 2, rockSpeed, this.getTexture("snowrock"), 5, 50, true, "linear", 300, 30, "snowrock"))
         } else if(this.activeDirectional) {
             // Snowballs
             game.addItem(new Item(this.x + (this.getBound().width / 2), this.y + 30, this.name, this.playerDirection, this.specialSpeed * 3, this.getTexture("snowball"), this.specialScale, this.snowballDamage, true, undefined, 300, 8))

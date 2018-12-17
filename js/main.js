@@ -4,8 +4,7 @@ ctx.imageSmoothingEnabled = false;
 
 var keysDown = new Array();
 
-const LOG_KEYS = true;
-
+const LOG_KEYS = false;
 
 var camera = {
     zoom: 1,
