@@ -1,11 +1,17 @@
+/**
+ * main.js for XMAS-FIGHTERS
+ */
+
+var LOG_KEYS = false;
+var HIDE_PLAYERS = false;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
+
+var game;
+var frames = 0;
 var keysDown = new Array();
-
-const LOG_KEYS = false;
-
 var camera = {
     zoom: 1,
     desiredZoom: .5,
@@ -22,9 +28,10 @@ var camera = {
 
 function updateCamera() {
     var testZoom = camera.maxZoom;
+    var center = getCenterFromPlayerPos();
     for (player of game.players) {
         var bounds = player.getBound();
-        while (!inFrame(bounds.x, bounds.y, bounds.width, bounds.height, testZoom, -(((canvas.width / testZoom) - canvas.width) / 2), -(((canvas.height / testZoom) - canvas.height) / 2)) && testZoom > camera.minZoom) {
+        while (!inFrame(bounds.x, bounds.y, bounds.width, bounds.height, testZoom, getCameraCenter(testZoom).x, getCameraCenter(testZoom).y) && testZoom > camera.minZoom) {
             testZoom -= .05;
         }
     }
@@ -36,8 +43,28 @@ function updateCamera() {
         if (camera.desiredZoom < camera.zoom) camera.zoom -= camera.zoomOutSpeed;
     }
 
-    camera.x = -(((canvas.width / camera.zoom) - canvas.width) / 2);
-    camera.y = -(((canvas.height / camera.zoom) - canvas.height) / 2);
+    camera.x = getCameraCenter(camera.zoom).x;
+    camera.y = getCameraCenter(camera.zoom).y;
+}
+
+function getCameraCenter(zoom){
+    //var center = getCenterFromPlayerPos();
+    return {
+        x: -(((canvas.width  / zoom) - canvas.width) / 2) ,
+        y: -(((canvas.height / zoom) - canvas.height) / 2)
+    }
+}
+
+function getCenterFromPlayerPos(){
+    var totalX = 0, totalY = 0;
+    for(player of game.players){
+        totalX+=player.x;
+        totalY+=player.y;
+    }
+    return {
+        x: totalX / game.players.length - canvas.width/2,
+        y: totalY / game.players.length - canvas.width/2
+    }
 }
 
 
@@ -60,24 +87,42 @@ var inputs = {
     keys: new Input("keys", [38, 40, 37, 39, 76, 75, -1])
 }
 
+var selectedStage = 0;
 
+var characters = [
+    {
+        name: "Snowman",
+        class: Snowman
+    }, {
+        name: "Santa",
+        class: Santa
+    }
+]
 
-var game = new Game(stages.defaultStage);
-game.addPlayer(new Snowman(100, 100, "P1", inputs.wasd, 0));
-game.addPlayer(new Santa(420, 100, "Bot", inputs.keys, 1));
-
-
-
-startGame();
+function selectStage(id){
+    selectedStage = id;
+}
 
 function startGame() {
+    game = new Game(stages[selectedStage]);
+    game.addPlayer(new Snowman(100, 100, "P1", inputs.wasd, 0));
+    game.addPlayer(new Santa(420, 100, "Bot", inputs.keys, 1));
+    
     game.running = true;
     loop();
 }
 
+function stopGame(){
+    game.running = false;
+}
+
+function hideGUI(){
+    document.getElementById("gui").style.visibility = "hidden";
+}
+
 function loop() {
     if (!game.running) {
-        console.log("Game ended.")
+        draw("black", 0, 0, canvas.width, canvas.height);
         return;
     }
 
@@ -123,23 +168,28 @@ function logic() {
 }
 
 function render() {
+    if(game.stage.bgcolor) draw(game.stage.bgcolor, 0, 0, canvas.width, canvas.height, true);
+    game.stage.logic();
+
     /* Render stage */
-    draw(game.stage.bgcolor, 0, 0, canvas.width, canvas.height, true);
     for (item of game.stage.content) {
         var bound = item.getBound();
         draw(item.image, bound.x, bound.y, bound.width, bound.height);
     }
 
     /* Render players */
-    for (character of game.players) {
-        character.draw();
+    if(!HIDE_PLAYERS){
+        for (character of game.players) {
+            character.draw();
+        }
     }
+    
     // Render items
     for (item of game.items) {
         item.draw();
     }
 
-    game.stage.logic();
+    frames++;
 }
 
 

@@ -44,7 +44,7 @@ class Snowflake{
         /* this.x; */
         this.lifeLeft--;
         if(this.stopped) return;
-        for(item of game.stage.content){
+        for(var item of game.stage.content){
             if(item.collision){
                 if(checkCollision(item, this)){
                     this.stopped = true;
@@ -59,9 +59,9 @@ class Snowflake{
     }
 }
 
-var stages = {
-    
-    defaultStage: {
+var stages = [
+    {
+        name: "Delta",
         snowflakes: [],
         snowflakeAmount: 1000,
         logic: function() {
@@ -90,5 +90,29 @@ var stages = {
             new StageItem("textures/general/tree.png", 400, 180, 10, false),
             new StageItem("textures/general/snowman.png", 230, 230, 10, false)
         ]
+    }, {
+        name: "Omega",
+        textures: [],
+        tick: 0,
+        init: function(){
+            for(i = 0; i < 461; i++){
+                this.textures[i] = new Image();
+                var numString = i.toString();
+                while(numString.length < 3) numString = "0" + numString;
+                this.textures[i].src = encodeURIComponent("textures/omega/stream/omega_#####_00" + numString + ".jpg");
+            }
+        },
+        logic: function(){
+            if(frames % 3 == 0) this.tick++;
+            draw(this.textures[this.tick%this.textures.length], -530, -400, 2000, 2000, false);
+        },
+        spawns: [{
+            x: 100,
+            y: 100
+        }],
+        content: [
+            //new StageItem("textures/omega/underside.png", 60, 300, 10, false),
+            new StageItem("textures/omega/platform-big.png", 60, 300, 10, true)
+        ]
     }
-}
+]

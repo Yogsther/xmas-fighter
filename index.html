@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,24 @@
     <link rel="stylesheet" href="style.css">
     <title>xmas-fighters</title>
 </head>
+
 <body>
-    <canvas id="canvas" width="720" height="480" />
+    <div id="wrap">
+        <div id="canvas-wrap">
+            <canvas id="canvas" width="720" height="480"></canvas>
+            <div id="gui">
+                <h3>GUI v.0.1</h3>
+                <h4>Select a stage</h4>
+                    <button onclick="selectStage(0)">Select: Delta Stage</button><br>
+                    <button onclick="selectStage(1)">Select: Omega Stage (Warning long load times)</button><br>
+                    <h4>Start the game</h4>
+                    <button onclick="startGame()">Start game</button>
+                    <button onclick="stopGame()">Stop game</button><br><br>
+                    <button onclick="hideGUI()">Hide GUI</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/Item.js"></script>
     <script src="js/Character.js"></script>
     <script src="js/char_Snowman.js"></script>
@@ -18,4 +35,5 @@
     <script src="js/Game.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

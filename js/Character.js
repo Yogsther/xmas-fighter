@@ -57,7 +57,7 @@ class Character {
     }
 
     giveInvincibility(time /* frames */){
-        this.invincibilityTime += time;
+        this.invincibilityTime = time;
     }
 
 
@@ -141,6 +141,7 @@ class Character {
         var spawn = game.stage.spawns[Math.floor(Math.random()*game.stage.spawns.length)]
 
         this.health = this.maxHealth;
+        this.invincibilityTime = 100;
         this.x = spawn.x;
         this.y = spawn.y;
 

@@ -1,6 +1,7 @@
 class Game{
     constructor(stage){
         this.stage = stage;
+        if(this.stage.init) this.stage.init();
         this.running = true;
         this.players = [];
         this.items = [];
