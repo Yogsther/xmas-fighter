@@ -73,7 +73,7 @@ class Snowman extends Character {
         this.lastSpecialDeploy--;
         this.attackCoolDown--;
         ctx.globalAlpha = 1;
-        super.drawShield(this.scale + 1);
+        super.drawShield(this.scale + 2);
 
         if(this.flagActive) draw(this.getTexture("flag"), this.flagX, this.flagY, this.getTexture("flag").width*this.flagScale, this.getTexture("flag").height*this.flagScale);
     }

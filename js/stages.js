@@ -29,8 +29,9 @@ class StageItem {
 }
 class Snowflake{
     constructor(){
-        this.x = Math.floor(Math.random()*1000)-150;
-        this.y = -500;
+        this.x = Math.floor(Math.random()*720);
+        this.y = -450;
+        this.sideSpeed = Math.floor(Math.random()*.5)+.5;
         this.scale = Math.floor((Math.random()+1)*4)/10;
         this.width = 10 * this.scale;
         this.height = this.width;
@@ -38,7 +39,7 @@ class Snowflake{
         this.fallSpeed = 5 + (Math.random()*3);
         this.goingLeft = false;
         this.stopped = false;
-        this.lifeLeft = 200;
+        this.lifeLeft = Math.floor(Math.random()*100) + 80;
     }
     logic(){
         /* this.x; */
@@ -54,8 +55,8 @@ class Snowflake{
         }
         if(Math.random() > .98) this.goingLeft = !this.goingLeft; // Switch direciton
         this.y+=this.fallSpeed;
-        if(this.goingLeft) this.x+=.5;
-            else this.x-=.5;
+        if(this.goingLeft) this.x+=this.sideSpeed;
+            else this.x-=this.sideSpeed;
     }
 }
 
@@ -63,10 +64,11 @@ var stages = [
     {
         name: "Delta",
         snowflakes: [],
-        snowflakeAmount: 1000,
+        snowflakeAmount: 800,
+        flakesPerFrame: 5,
         logic: function() {
             var flakesCreatedThisFrame = 0;
-            while(this.snowflakes.length < this.snowflakeAmount && flakesCreatedThisFrame < 5){
+            while(this.snowflakes.length < this.snowflakeAmount && flakesCreatedThisFrame < this.flakesPerFrame){
                 this.snowflakes.push(new Snowflake());
                 flakesCreatedThisFrame++;
             }
@@ -83,10 +85,10 @@ var stages = [
             y: 100
         }],
         content: [
-            new StageItem("textures/general/platform-big.png", 60, 300, 10, true),
-            new StageItem("textures/general/platform-small.png", 480, 150, 10, true),
-            new StageItem("textures/general/platform-small.png", 60, 150, 10, true),
-            new StageItem("textures/general/platform-small.png", 275, 0, 10, true),
+            new StageItem("textures/general/platform-big.png", 80, 300, 10, true),
+            new StageItem("textures/general/platform-small.png", 500, 150, 10, true),
+            new StageItem("textures/general/platform-small.png", 80, 150, 10, true),
+            new StageItem("textures/general/platform-small.png", 290, 0, 10, true),
             new StageItem("textures/general/tree.png", 400, 180, 10, false),
             new StageItem("textures/general/snowman.png", 230, 230, 10, false)
         ]
@@ -107,12 +109,15 @@ var stages = [
             draw(this.textures[this.tick%this.textures.length], -530, -400, 2000, 2000, false);
         },
         spawns: [{
-            x: 100,
+            x: 120,
+            y: 100
+        }, {
+            x: 300,
             y: 100
         }],
         content: [
-            //new StageItem("textures/omega/underside.png", 60, 300, 10, false),
-            new StageItem("textures/omega/platform-big.png", 60, 300, 10, true)
+            new StageItem("textures/omega/underside.png", 135, 300, 10, false),
+            new StageItem("textures/omega/platform-big.png", 135, 300, 10, true)
         ]
     }
 ]

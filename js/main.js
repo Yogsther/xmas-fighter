@@ -11,6 +11,7 @@ ctx.imageSmoothingEnabled = false;
 
 var game;
 var frames = 0;
+var selectedStage = 0;
 var keysDown = new Array();
 var camera = {
     zoom: 1,
@@ -25,6 +26,25 @@ var camera = {
     zoomPauseTime: 400, /* Frames */
     zoomPause: 0
 }
+
+
+/* Key order: UP, DOWN, LEFT, RIGHT, DAMAGE, SPECIAL, JUMP */
+var inputs = {
+    wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
+    empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1]),
+    keys: new Input("keys", [38, 40, 37, 39, 76, 75, -1])
+}
+
+var characters = [
+    {
+        name: "Snowman",
+        class: Snowman
+    }, {
+        name: "Santa",
+        class: Santa
+    }
+]
+
 
 function updateCamera() {
     var testZoom = camera.maxZoom;
@@ -80,24 +100,7 @@ document.addEventListener("keyup", e => {
     keysDown[e.keyCode] = false;
 })
 
-/* Key order: UP, DOWN, LEFT, RIGHT, DAMAGE, SPECIAL, JUMP */
-var inputs = {
-    wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
-    empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1]),
-    keys: new Input("keys", [38, 40, 37, 39, 76, 75, -1])
-}
-
-var selectedStage = 0;
-
-var characters = [
-    {
-        name: "Snowman",
-        class: Snowman
-    }, {
-        name: "Santa",
-        class: Santa
-    }
-]
+startGame();
 
 function selectStage(id){
     selectedStage = id;

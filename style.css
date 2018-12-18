@@ -8,14 +8,13 @@ body{
     image-rendering: pixelated;
     position: absolute;
     left: 0px;
+    width: 100%;
     top: 0px;
-    border-radius: 5px;
     z-index: 0;
 }
 
 #canvas-wrap{
-    width: 720px;
-    height: 480px;
+    width: 900px;
     position: relative;
     margin: 0 auto;
     display: block;
@@ -26,7 +25,7 @@ body{
     position: relative;
     margin: 0 auto;
     display: block;
-    width: 800px;
+    width: 1000px;
 }
 
 #gui{
