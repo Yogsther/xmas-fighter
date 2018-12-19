@@ -45,7 +45,7 @@ var characters = [
     }
 ]
 
-//startGame();
+loop(); // Start heart
 
 
 function updateCamera() {
@@ -117,7 +117,6 @@ function selectStage(up){
 
 function startGame() {
     hideGUI();
-
     game = new Game(stages[Math.abs(selectedStage % stages.length)]);
     var p1, p2;
     var balls = document.getElementsByClassName("ball");
@@ -128,10 +127,10 @@ function startGame() {
         else p2 = Santa;
          
 
-    game.addPlayer(new p1(100, 100, "P1", inputs.wasd, 0));
-    game.addPlayer(new p2(420, 100, "P2", inputs.arrow, 1));
+    game.addPlayer(new p1(100, 100, "P1", inputs.wasd, 0, 3, "#2073f9"));
+    game.addPlayer(new p2(420, 100, "P2", inputs.arrow, 1, 3, "#f92052"));
     
-    game.running = true;
+    game.running = true;  
 }
 
 function stopGame(){
@@ -148,17 +147,21 @@ function showGUI(){
 }
 
 function loop() {
-    if (!game.running) {
-        draw("black", 0, 0, canvas.width, canvas.height);
-        requestAnimationFrame(loop);
-        return;
-    }
-
-    logic();
-    updateCamera();
-    render();
+    
+    try{ // Try because game may not be initiated!
+        if (!game.running) {
+            draw("black", 0, 0, canvas.width, canvas.height);
+        } else {
+    
+            logic();
+            updateCamera();
+            render();
+        
+        }
+    } catch(e){}
 
     requestAnimationFrame(loop);
+
 }
 
 function logic() {
@@ -247,6 +250,19 @@ function draw(sprite, x, y, width, height, static) {
         // Draw the image
         ctx.drawImage(sprite, x, y, width, height);
     }
+}
+
+function drawText(text, color, size, x, y, static, align) {
+    if (!static) {
+        x = (x - camera.x) * camera.zoom;
+        y = (y - camera.y) * camera.zoom;
+    }
+
+    if(align) ctx.textAlign = align;
+       
+    ctx.fillStyle = color;
+    ctx.font = "bold " + size + "px Roboto";
+    ctx.fillText(text, x, y);  
 }
 
 function inFrame(x, y, width, height, zoom, camx, camy) {
@@ -352,5 +368,3 @@ for(el of document.getElementsByClassName("ball")){
     el.style.left = temp+"px";
     temp+=196;
 }
-
-loop();

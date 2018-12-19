@@ -1,9 +1,10 @@
 class Character {
-    constructor(x, y, name, input, id, lives) {
+    constructor(x, y, name, input, id, lives, color) {
         this.lives = lives;
         this.id = id;
         this.x = x;
         this.y = y;
+        this.color = color;
         this.alive = true;
         this.invincibilityTime = 100; // Frames
         this.activeDirectional = false;
@@ -147,15 +148,15 @@ class Character {
 
     }
 
-    draw() {
+    draw(color) {
         var dimensions = this.getBound();
-
         // TODO
         /* ctx.font = "12px Ubuntu";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.fillText(this.name, this.x + (dimensions.width / 2)  + camera.x, this.y - 30 + camera.y) */
-     
+        drawText(this.name, this.color, 20, this.x + (dimensions.width / 2), this.y - 30, false, "center")
+
         var healthBarWidth = 80;
         var healthBarHeight = 9;
         draw("#131313", this.x + ((dimensions.width/2) - healthBarWidth/2), this.y - 20, healthBarWidth, healthBarHeight);

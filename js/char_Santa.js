@@ -4,8 +4,8 @@
 
 class Santa extends Character{
 
-    constructor(x, y, name, input, id, lives){
-        super(x, y, name, input, id, lives);
+    constructor(x, y, name, input, id, lives, color){
+        super(x, y, name, input, id, lives, color);
         this.scale = 3;
         this.specialItemDelay = 20; // Frames
         this.lastSpecialDeploy = 0;
