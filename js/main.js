@@ -11,7 +11,8 @@ ctx.imageSmoothingEnabled = false;
 
 var game;
 var frames = 0;
-var selectedStage = 0;
+var selectedStage = -1;
+    selectStage(true);
 var keysDown = new Array();
 var camera = {
     zoom: 1,
@@ -112,7 +113,10 @@ function selectStage(up){
     } else {
         selectedStage--;
     }
-    document.getElementById("stage-img").src = "textures/general/thumbnail_" + stages[Math.abs(selectedStage % stages.length)].name.toLowerCase() + ".png";
+    var stage = stages[Math.abs(selectedStage % stages.length)];
+    document.getElementById("stage-img").src = "textures/general/thumbnail_" + stage.name.toLowerCase() + ".png";
+    document.getElementById("stage-name").innerText = stage.name;
+    document.getElementById("stage-description").innerText = stage.description;
 }
 
 function startGame() {
@@ -147,10 +151,9 @@ function showGUI(){
 }
 
 function loop() {
-    
     try{ // Try because game may not be initiated!
         if (!game.running) {
-            draw("black", 0, 0, canvas.width, canvas.height);
+            draw("black", 0, 0, canvas.width, canvas.height, true);
         } else {
     
             logic();

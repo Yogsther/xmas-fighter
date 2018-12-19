@@ -63,6 +63,7 @@ class Snowflake{
 var stages = [
     {
         name: "Delta",
+        description: "Snowy winter map with four platforms. Watch out for lag if you have a weak machine, there's a lot of snow!",
         snowflakes: [],
         snowflakeAmount: 800,
         flakesPerFrame: 5,
@@ -97,6 +98,7 @@ var stages = [
         ]
     }, {
         name: "Omega",
+        description: "Dark, simplistic and runs like butter - for the competitive players.",
         textures: [],
         tick: 0,
         init: function(){

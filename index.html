@@ -13,6 +13,11 @@
 
 <body>
     <div id="wrap">
+
+        <div id="header"> 
+            <img src="textures/general/header.png" alt="" id="header-img">
+        </div>
+
         <div id="canvas-wrap">
             <canvas id="canvas" width="720" height="480"></canvas>
             
@@ -26,7 +31,15 @@
                     </div>
                     <div class="character">
                             <img src="textures/general/icon_snowman.png" class="char-icon" alt="Icon">
-                        </div>
+                    </div>
+                    
+                    <span class="info">Drag the tokens to select character for P1 & P2.</span>
+                    <span class="info big">Controls [movement, special, attack]</span>
+                    <span class="info">
+                        P1: WASD, C, V <br>
+                        P2: Arrow Keys, K, L<br><br>
+                        Use ESC to return to this menu.
+                    </span>
                     
                 </div>
                 <div id="right-side">
@@ -34,9 +47,11 @@
                         <div id="stage-container">
                             <img src="textures/general/thumbnail_delta.png" alt="Stage thumbnail" class="stage-thumb" id="stage-img">
                             <button class="btn left" onclick="selectStage(false)">◀</button> <button class="btn right" onclick="selectStage(true)">▶</button>
+                            <span class="info big" id="stage-name">Loading...</span>
+                            <span class="info" id="stage-description">...?</span>
                         </div>
 
-                        <button class="start-button" onclick="startGame()">START!</button>
+                        <button class="start-button" onclick="startGame()">BEGIN!</button>
                 </div>
             </div>
         </div>
