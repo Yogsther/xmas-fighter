@@ -32,7 +32,7 @@ var camera = {
 var inputs = {
     wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
     empty: new Input("bot", [-1, -1, -1, -1, -1, -1, -1]),
-    keys: new Input("keys", [38, 40, 37, 39, 76, 75, -1])
+    arrow: new Input("arrow", [38, 40, 37, 39, 76, 75, -1])
 }
 
 var characters = [
@@ -44,6 +44,8 @@ var characters = [
         class: Santa
     }
 ]
+
+//startGame();
 
 
 function updateCamera() {
@@ -94,25 +96,42 @@ document.addEventListener("keydown", e => {
         player.clickEvent(e.keyCode);
     }
     if (LOG_KEYS) console.log(e.keyCode);
+    if(e.keyCode == 27){
+        stopGame();
+        showGUI();
+    }
 })
 
 document.addEventListener("keyup", e => {
     keysDown[e.keyCode] = false;
 })
 
-startGame();
-
-function selectStage(id){
-    selectedStage = id;
+function selectStage(up){
+    if(up){
+        selectedStage++;
+    } else {
+        selectedStage--;
+    }
+    document.getElementById("stage-img").src = "textures/general/thumbnail_" + stages[Math.abs(selectedStage % stages.length)].name.toLowerCase() + ".png";
 }
 
 function startGame() {
-    game = new Game(stages[selectedStage]);
-    game.addPlayer(new Snowman(100, 100, "P1", inputs.wasd, 0));
-    game.addPlayer(new Santa(420, 100, "Bot", inputs.keys, 1));
+    hideGUI();
+
+    game = new Game(stages[Math.abs(selectedStage % stages.length)]);
+    var p1, p2;
+    var balls = document.getElementsByClassName("ball");
+    if(Number(balls[0].style.left.substr(0, balls[0].style.left.indexOf("p"))) > 206) p1 = Snowman;
+        else p1 = Santa;
+        
+    if(Number(balls[1].style.left.substr(0, balls[1].style.left.indexOf("p"))) > 206) p2 = Snowman;
+        else p2 = Santa;
+         
+
+    game.addPlayer(new p1(100, 100, "P1", inputs.wasd, 0));
+    game.addPlayer(new p2(420, 100, "P2", inputs.arrow, 1));
     
     game.running = true;
-    loop();
 }
 
 function stopGame(){
@@ -123,9 +142,15 @@ function hideGUI(){
     document.getElementById("gui").style.visibility = "hidden";
 }
 
+
+function showGUI(){
+    document.getElementById("gui").style.visibility = "visible";
+}
+
 function loop() {
     if (!game.running) {
         draw("black", 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(loop);
         return;
     }
 
@@ -288,3 +313,44 @@ function checkCollision(obj1, obj2) {
     }
     return false;
 }
+
+
+/* MENU */
+
+//<div class="ball blue">P1</div>
+
+var mouse = {
+    x: 0,
+    y: 0,
+    down: false,
+    target: false
+}
+
+document.addEventListener("mousedown", e => {
+    mouse.down = true;
+    if(e.target.classList.value.indexOf("ball") !== -1){
+        mouse.target = e.target;
+    }
+})
+document.addEventListener("mouseup", e => {
+    mouse.down = false;
+    mouse.target = false;
+})
+
+document.addEventListener("mousemove", e => {
+    mouse.x = e.clientX - canvas.getBoundingClientRect().left
+    mouse.y = e.clientY - canvas.getBoundingClientRect().top
+
+    if(mouse.target){
+        mouse.target.style.left = mouse.x-45 + "px";
+        mouse.target.style.top = mouse.y-45 + "px";
+    }
+})
+
+var temp = 147;
+for(el of document.getElementsByClassName("ball")){
+    el.style.left = temp+"px";
+    temp+=196;
+}
+
+loop();

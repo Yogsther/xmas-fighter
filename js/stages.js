@@ -81,7 +81,10 @@ var stages = [
         },
         bgcolor: "#9fdbdb",
         spawns: [{
-            x: 100,
+            x: 120,
+            y: 100
+        }, {
+            x: 300,
             y: 100
         }],
         content: [

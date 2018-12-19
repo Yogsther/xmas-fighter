@@ -3,6 +3,15 @@ body{
     margin: 0px;
 }
 
+img{
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
 #canvas{
     background: black;
     image-rendering: pixelated;
@@ -31,7 +40,139 @@ body{
 #gui{
     color: white;
     display: block;
-    padding: 25px;
     z-index: 10;
     position: relative;
+    padding-top: 25px;
+}
+
+#left-side{
+    display: inline-block;
+    background: rgb(32, 32, 32);
+    width: 412.5px;
+    position: relative;
+    height: 550px;
+    left: 25px;
+}
+
+#right-side{
+    display: inline-block;
+    background: rgb(32, 32, 32);
+    width: 412.5px;
+    height: 550px;
+    position: relative;
+    right: 25px;
+    float: right;
+
+}
+
+.ball{
+    border-radius: 10000px;
+    height: 60px;
+    width: 60px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    background: rgb(255, 173, 40);
+    user-select: none;
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 100;
+    transition: all .1s;
+}
+
+.ball:hover{
+    background: rgb(255, 180, 59);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.329);
+    transform: scale(1.05)
+}
+
+.p1{
+    left: 147px;
+    top: 205px;
+}
+
+.p2{
+    left: 343px;
+    top: 205px;
+}
+
+.ball:active{
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.267);
+    transform: scale(1.1)
+}
+
+.character{
+    position: relative;
+    display: inline-block;
+    margin-left: 25px;
+    width: 168.75px;
+    height: 168.75px;
+    background: linear-gradient(white, black);
+}
+
+.char-icon{
+    width: 100%;
+    image-rendering: pixelated;
+}
+
+.title{
+    display: block;
+    font-size: 30px;
+    padding: 25px;
+}
+
+#stage-container{
+    width: 362.5px;
+    height: 228.154952px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.stage-thumb{
+    width: 100%;
+}
+
+button:focus {outline:0;}
+
+.btn{
+    position: absolute;
+    top: 90px;
+    width: 30px;
+    height: 40px;
+    background: rgb(27, 27, 27);
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.left{
+    left: 0px;
+}
+
+.right{
+    right: 0px;
+}
+
+.start-button{
+    width: 362.5px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 25px;
+    height: 55px;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    transition: all .1s;
+    background: rgb(255, 173, 40);
+    color: white;
+    top: 130px;
+    position: relative;
+}
+
+.start-button:hover{
+    width: 100%;
+    color: rgb(255, 173, 40);
+    background: white;
 }
