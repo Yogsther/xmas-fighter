@@ -41,7 +41,7 @@ var mouse = {
     hoverTarget: false
 }
 
-
+    
 /* Key order: UP, DOWN, LEFT, RIGHT, DAMAGE, SPECIAL, JUMP */
 var inputs = {
     wasd: new Input("wasd", [87, 83, 65, 68, 86, 67, 32]),
@@ -58,11 +58,11 @@ var characters = [{
 }]
 
 var menuMusic = new Audio();
-    menuMusic.src = "sounds/main-theme.mp3";
+menuMusic.src = "sounds/main-theme.mp3";
+menuMusic.loop = true;
+menuMusic.volume = .4;
+menuMusic.play();
 
-window.onload = () => {
-    menuMusic.play();
-}
 
 loop(); // Start heart
 
