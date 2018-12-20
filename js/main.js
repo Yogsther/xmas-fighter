@@ -57,6 +57,13 @@ var characters = [{
     class: Santa
 }]
 
+var menuMusic = new Audio();
+    menuMusic.src = "sounds/main-theme.mp3";
+
+window.onload = () => {
+    menuMusic.play();
+}
+
 loop(); // Start heart
 
 
