@@ -12,6 +12,26 @@ img{
     font-family: 'Roboto', sans-serif;
 }
 
+
+#header{
+    width: 900px;
+    height: 120px;
+    background: rgb(241, 241, 241);
+    margin: 0 auto;
+    display: block;
+    margin-top: 35px;
+    border-bottom: 7px #ff3549 solid;
+    /* border-radius: 10px 0px 0px 10px; */
+}
+
+#header-img{
+    width: 700px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    top: -33px;
+}
+
 #canvas{
     background: black;
     image-rendering: pixelated;
@@ -27,7 +47,7 @@ img{
     position: relative;
     margin: 0 auto;
     display: block;
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 #wrap{
@@ -47,7 +67,7 @@ img{
 
 #left-side{
     display: inline-block;
-    background: rgb(32, 32, 32);
+    background: #191919;
     width: 412.5px;
     position: relative;
     height: 550px;
@@ -56,7 +76,7 @@ img{
 
 #right-side{
     display: inline-block;
-    background: rgb(32, 32, 32);
+    background: #191919;
     width: 412.5px;
     height: 550px;
     position: relative;
@@ -67,12 +87,13 @@ img{
 
 .ball{
     border-radius: 10000px;
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     font-size: 30px;
     text-align: center;
-    line-height: 60px;
+    line-height: 50px;
     background: rgb(255, 173, 40);
+    border: 5px rgb(255, 187, 98) solid;
     user-select: none;
     cursor: pointer;
     position: absolute;
@@ -128,6 +149,7 @@ img{
     height: 228.154952px;
     margin: 0 auto;
     position: relative;
+    /* outline: 5px gold solid; */
 }
 
 .stage-thumb{
@@ -175,4 +197,16 @@ button:focus {outline:0;}
     width: 100%;
     color: rgb(255, 173, 40);
     background: white;
+}
+
+.info {
+    width: 362.5px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 10px;
+}
+
+.big{
+    font-size: 20px;
 }
