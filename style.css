@@ -10,6 +10,7 @@ img{
 
 *{
     font-family: 'Roboto', sans-serif;
+    cursor: url(textures/cursor/frame_00_delay-0.01s.png), auto;
 }
 
 
@@ -21,7 +22,7 @@ img{
     display: block;
     margin-top: 35px;
     border-bottom: 7px #ff3549 solid;
-    /* border-radius: 10px 0px 0px 10px; */
+    border-radius: 0px 0px 0px 0px;
 }
 
 #header-img{
@@ -65,24 +66,22 @@ img{
     padding-top: 25px;
 }
 
-#left-side{
+#left-side, #right-side{
     display: inline-block;
-    background: #191919;
+    background: #080808;
     width: 412.5px;
     position: relative;
-    height: 550px;
+    height: 550px;   
+    border-bottom: 7px solid #ff3549;
+}
+
+#left-side{
     left: 25px;
 }
 
 #right-side{
-    display: inline-block;
-    background: #191919;
-    width: 412.5px;
-    height: 550px;
-    position: relative;
     right: 25px;
     float: right;
-
 }
 
 .ball{
@@ -95,7 +94,6 @@ img{
     background: rgb(255, 173, 40);
     border: 5px rgb(255, 187, 98) solid;
     user-select: none;
-    cursor: pointer;
     position: absolute;
     top: 30px;
     left: 30px;
@@ -104,7 +102,6 @@ img{
 }
 
 .ball:hover{
-    background: rgb(255, 180, 59);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.329);
     transform: scale(1.05)
 }
@@ -112,11 +109,15 @@ img{
 .p1{
     left: 147px;
     top: 205px;
+    background: rgb(49, 68, 235);
+    border: 5px rgb(44, 49, 114) solid;
 }
 
 .p2{
     left: 343px;
     top: 205px;
+    background: rgb(253, 40, 58);
+    border: 5px rgb(155, 20, 42) solid;
 }
 
 .ball:active{
@@ -131,11 +132,21 @@ img{
     width: 168.75px;
     height: 168.75px;
     background: linear-gradient(white, black);
+    overflow: hidden;
 }
 
 .char-icon{
     width: 100%;
+    position: relative;
+    z-index: 10;
     image-rendering: pixelated;
+}
+
+.movie{
+    position: absolute;
+    z-index: 0;
+    left: -240px;
+    top: -70px;
 }
 
 .title{
@@ -165,7 +176,6 @@ button:focus {outline:0;}
     height: 40px;
     background: rgb(27, 27, 27);
     border: none;
-    cursor: pointer;
     color: white;
 }
 
@@ -184,19 +194,18 @@ button:focus {outline:0;}
     margin-top: 25px;
     height: 55px;
     border: none;
-    cursor: pointer;
     font-size: 30px;
     transition: all .1s;
-    background: rgb(255, 173, 40);
-    color: white;
+    background: #ff3549;
+    color: #f2f2f2;
     top: 130px;
     position: relative;
 }
 
 .start-button:hover{
     width: 100%;
-    color: rgb(255, 173, 40);
-    background: white;
+    color: #ff3549;
+    background: #f2f2f2;
 }
 
 .info {

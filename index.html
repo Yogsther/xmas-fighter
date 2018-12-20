@@ -22,14 +22,16 @@
             <canvas id="canvas" width="720" height="480"></canvas>
             
             <div id="gui">
-                    <div class="ball p1">P1</div>
-                    <div class="ball p2">P2</div>
+                    <div class="ball p1 hover">P1</div>
+                    <div class="ball p2 hover">P2</div>
                 <div id="left-side">
                     <span class="title">Choose your character</span>
                     <div class="character">
+                        <video src="movies/player-bg.mp4" autoplay muted class="movie"></video>
                         <img src="textures/general/icon_santa.png" class="char-icon" alt="Icon">
                     </div>
                     <div class="character">
+                            <video src="movies/player-bg.mp4" autoplay muted class="movie"></video>
                             <img src="textures/general/icon_snowman.png" class="char-icon" alt="Icon">
                     </div>
                     
@@ -46,12 +48,12 @@
                         <span class="title">Select stage</span>
                         <div id="stage-container">
                             <img src="textures/general/thumbnail_delta.png" alt="Stage thumbnail" class="stage-thumb" id="stage-img">
-                            <button class="btn left" onclick="selectStage(false)">◀</button> <button class="btn right" onclick="selectStage(true)">▶</button>
+                            <button class="btn left hover" onclick="selectStage(false)">◀</button> <button class="btn right hover" onclick="selectStage(true)">▶</button>
                             <span class="info big" id="stage-name">Loading...</span>
                             <span class="info" id="stage-description">...?</span>
                         </div>
 
-                        <button class="start-button" onclick="startGame()">BEGIN!</button>
+                        <button class="start-button hover" onclick="startGame()">BEGIN!</button>
                 </div>
             </div>
         </div>

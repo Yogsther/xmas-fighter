@@ -9,10 +9,12 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
 
+const l = console.log;
+
 var game;
 var frames = 0;
 var selectedStage = -1;
-    selectStage(true);
+selectStage(true);
 var keysDown = new Array();
 var camera = {
     zoom: 1,
@@ -24,8 +26,19 @@ var camera = {
     zoomOutSpeed: .015,
     x: 0,
     y: 0,
-    zoomPauseTime: 400, /* Frames */
+    zoomPauseTime: 400,
+    /* Frames */
     zoomPause: 0
+}
+
+var mouse = {
+    x: 0,
+    y: 0,
+    down: false,
+    target: false,
+    hover: false,
+    index: 0,
+    hoverTarget: false
 }
 
 
@@ -36,15 +49,13 @@ var inputs = {
     arrow: new Input("arrow", [38, 40, 37, 39, 76, 75, -1])
 }
 
-var characters = [
-    {
-        name: "Snowman",
-        class: Snowman
-    }, {
-        name: "Santa",
-        class: Santa
-    }
-]
+var characters = [{
+    name: "Snowman",
+    class: Snowman
+}, {
+    name: "Santa",
+    class: Santa
+}]
 
 loop(); // Start heart
 
@@ -62,7 +73,7 @@ function updateCamera() {
     camera.desiredZoom = testZoom;
 
     if (Math.abs(camera.desiredZoom - camera.zoom) >= camera.zoomOutSpeed) {
-        if (camera.desiredZoom > camera.zoom) camera.zoom += camera.zoomInSpeed * (Math.abs(camera.desiredZoom-camera.zoom)) * 7;
+        if (camera.desiredZoom > camera.zoom) camera.zoom += camera.zoomInSpeed * (Math.abs(camera.desiredZoom - camera.zoom)) * 7;
         if (camera.desiredZoom < camera.zoom) camera.zoom -= camera.zoomOutSpeed;
     }
 
@@ -70,23 +81,24 @@ function updateCamera() {
     camera.y = getCameraCenter(camera.zoom).y;
 }
 
-function getCameraCenter(zoom){
+function getCameraCenter(zoom) {
     //var center = getCenterFromPlayerPos();
     return {
-        x: -(((canvas.width  / zoom) - canvas.width) / 2) ,
+        x: -(((canvas.width / zoom) - canvas.width) / 2),
         y: -(((canvas.height / zoom) - canvas.height) / 2)
     }
 }
 
-function getCenterFromPlayerPos(){
-    var totalX = 0, totalY = 0;
-    for(player of game.players){
-        totalX+=player.x;
-        totalY+=player.y;
+function getCenterFromPlayerPos() {
+    var totalX = 0,
+        totalY = 0;
+    for (player of game.players) {
+        totalX += player.x;
+        totalY += player.y;
     }
     return {
-        x: totalX / game.players.length - canvas.width/2,
-        y: totalY / game.players.length - canvas.width/2
+        x: totalX / game.players.length - canvas.width / 2,
+        y: totalY / game.players.length - canvas.width / 2
     }
 }
 
@@ -97,7 +109,7 @@ document.addEventListener("keydown", e => {
         player.clickEvent(e.keyCode);
     }
     if (LOG_KEYS) console.log(e.keyCode);
-    if(e.keyCode == 27){
+    if (e.keyCode == 27) {
         stopGame();
         showGUI();
     }
@@ -107,8 +119,8 @@ document.addEventListener("keyup", e => {
     keysDown[e.keyCode] = false;
 })
 
-function selectStage(up){
-    if(up){
+function selectStage(up) {
+    if (up) {
         selectedStage++;
     } else {
         selectedStage--;
@@ -124,44 +136,45 @@ function startGame() {
     game = new Game(stages[Math.abs(selectedStage % stages.length)]);
     var p1, p2;
     var balls = document.getElementsByClassName("ball");
-    if(Number(balls[0].style.left.substr(0, balls[0].style.left.indexOf("p"))) > 206) p1 = Snowman;
-        else p1 = Santa;
-        
-    if(Number(balls[1].style.left.substr(0, balls[1].style.left.indexOf("p"))) > 206) p2 = Snowman;
-        else p2 = Santa;
-         
+    if (Number(balls[0].style.left.substr(0, balls[0].style.left.indexOf("p"))) > 206) p1 = Snowman;
+    else p1 = Santa;
+
+    if (Number(balls[1].style.left.substr(0, balls[1].style.left.indexOf("p"))) > 206) p2 = Snowman;
+    else p2 = Santa;
+
 
     game.addPlayer(new p1(100, 100, "P1", inputs.wasd, 0, 3, "#2073f9"));
     game.addPlayer(new p2(420, 100, "P2", inputs.arrow, 1, 3, "#f92052"));
-    
-    game.running = true;  
+
+    game.running = true;
 }
 
-function stopGame(){
+function stopGame() {
     game.running = false;
 }
 
-function hideGUI(){
+function hideGUI() {
     document.getElementById("gui").style.visibility = "hidden";
 }
 
 
-function showGUI(){
+function showGUI() {
     document.getElementById("gui").style.visibility = "visible";
 }
 
 function loop() {
-    try{ // Try because game may not be initiated!
+    renderCursor();
+    try { // Try because game may not be initiated!
         if (!game.running) {
             draw("black", 0, 0, canvas.width, canvas.height, true);
         } else {
-    
+
             logic();
             updateCamera();
             render();
-        
+
         }
-    } catch(e){}
+    } catch (e) {}
 
     requestAnimationFrame(loop);
 
@@ -179,7 +192,7 @@ function logic() {
     for (i = 0; i < game.items.length; i++) {
         item = game.items[i];
         for (stagePart of game.stage.content) {
-            if(stagePart.collision){
+            if (stagePart.collision) {
                 if (checkCollision(stagePart, item.getBound())) {
                     item.kill();
                 }
@@ -198,11 +211,11 @@ function logic() {
         if (item.isDead()) game.items.splice(i, 1);
     }
 
-   
+
 }
 
 function render() {
-    if(game.stage.bgcolor) draw(game.stage.bgcolor, 0, 0, canvas.width, canvas.height, true);
+    if (game.stage.bgcolor) draw(game.stage.bgcolor, 0, 0, canvas.width, canvas.height, true);
     game.stage.logic();
 
     /* Render stage */
@@ -212,12 +225,12 @@ function render() {
     }
 
     /* Render players */
-    if(!HIDE_PLAYERS){
+    if (!HIDE_PLAYERS) {
         for (character of game.players) {
             character.draw();
         }
     }
-    
+
     // Render items
     for (item of game.items) {
         item.draw();
@@ -261,11 +274,11 @@ function drawText(text, color, size, x, y, static, align) {
         y = (y - camera.y) * camera.zoom;
     }
 
-    if(align) ctx.textAlign = align;
-       
+    if (align) ctx.textAlign = align;
+
     ctx.fillStyle = color;
     ctx.font = "bold " + size + "px Roboto";
-    ctx.fillText(text, x, y);  
+    ctx.fillText(text, x, y);
 }
 
 function inFrame(x, y, width, height, zoom, camx, camy) {
@@ -338,16 +351,12 @@ function checkCollision(obj1, obj2) {
 
 //<div class="ball blue">P1</div>
 
-var mouse = {
-    x: 0,
-    y: 0,
-    down: false,
-    target: false
-}
+
 
 document.addEventListener("mousedown", e => {
     mouse.down = true;
-    if(e.target.classList.value.indexOf("ball") !== -1){
+    mouse.hover = false;
+    if (e.target.classList.value.indexOf("ball") !== -1) {
         mouse.target = e.target;
     }
 })
@@ -360,14 +369,43 @@ document.addEventListener("mousemove", e => {
     mouse.x = e.clientX - canvas.getBoundingClientRect().left
     mouse.y = e.clientY - canvas.getBoundingClientRect().top
 
-    if(mouse.target){
-        mouse.target.style.left = mouse.x-45 + "px";
-        mouse.target.style.top = mouse.y-45 + "px";
+    if (e.target.classList.value.indexOf("hover") != -1) {
+        mouse.hoverTarget = e.target;
+        mouse.hover = true;
+    } else {
+        mouse.hover = false;
+    }
+
+    if (mouse.target) {
+        mouse.target.style.left = mouse.x - 45 + "px";
+        mouse.target.style.top = mouse.y - 45 + "px";
     }
 })
 
 var temp = 147;
-for(el of document.getElementsByClassName("ball")){
-    el.style.left = temp+"px";
-    temp+=196;
+for (el of document.getElementsByClassName("ball")) {
+    el.style.left = temp + "px";
+    el.style.top = "205px";
+    temp += 196;
+}
+
+function renderCursor() {
+    if (mouse.hover) {
+        var number = (Math.round(mouse.index % 26)).toString();
+        if (number.length < 2) number = "0" + number;
+        var style = mouse.hoverTarget.outerHTML;
+
+        if(style.indexOf("style=") != -1) style = style.substr(style.indexOf("style=") + 7)
+            else style = "";
+        if (style.indexOf('cursor') != -1) style = style.substr(0, style.indexOf('cursor'));
+        else style = style.substr(0, style.indexOf('"'));
+
+        mouse.hoverTarget.setAttribute("style", style + "cursor:url('textures/cursor/frame_" + number + "_delay-0.01s.png'), auto;");
+
+        mouse.index += .5;
+        if (mouse.target) {
+            mouse.target.style.left = mouse.x - 45 + "px";
+            mouse.target.style.top = mouse.y - 45 + "px";
+        }
+    }
 }
