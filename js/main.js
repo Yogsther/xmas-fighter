@@ -59,12 +59,11 @@ var characters = [{
 
 var menuMusic = new Audio();
 menuMusic.src = "sounds/main-theme.mp3";
-menuMusic.loop = true;
 menuMusic.volume = .4;
 menuMusic.play();
 
 
-loop(); // Start heart
+setInterval(() => {loop()}, 16) // Start heart
 
 
 function updateCamera() {
@@ -182,9 +181,6 @@ function loop() {
 
         }
     } catch (e) {}
-
-    requestAnimationFrame(loop);
-
 }
 
 function logic() {
